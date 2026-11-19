@@ -1,0 +1,6 @@
+import type { ClientStageCode } from "@/types/database";
+import type { OrganizationSettings, StageHistory } from "@/types";
+
+type Store = { stages: Record<string, { stage: ClientStageCode; estimatedValue: number | null; lossReason: string }>; history: Record<string, StageHistory[]>; settings: OrganizationSettings };
+const root = globalThis as typeof globalThis & { __phase6Demo?: Store };
+export const phase6DemoStore = root.__phase6Demo ??= { stages: {}, history: {}, settings: { id: "demo-settings", businessName: "Cabral House Negócios Imobiliários", tradeName: "Cabral House", creci: "CRECI a definir", phone: "(00) 0000-0000", whatsapp: "5500000000000", email: "contato@exemplo.com", address: "Endereço comercial a definir", instagram: "@cabralhouse", website: "https://exemplo.com", description: "Compra, venda e locação com atendimento próximo e imóveis selecionados.", logoPath: "/brand/cabral-house-logo.svg", primaryColor: "#111111", secondaryColor: "#D6A34D", heroTitle: "Encontre o imóvel ideal para o seu próximo capítulo.", heroSubtitle: "Compra, venda e locação com atendimento próximo e imóveis selecionados para você.", footerText: "Atendimento próximo para decisões imobiliárias mais claras." } };

@@ -1,0 +1,11 @@
+import Link from "next/link";
+import { Building2, Mail, MessageSquare, Phone } from "lucide-react";
+import { notFound } from "next/navigation";
+import { LeadActions } from "@/components/admin/lead-actions";
+import { Status } from "@/components/admin/leads-manager";
+import { getLead } from "@/lib/data/leads";
+import { Breadcrumbs } from "@/components/admin/breadcrumbs";
+import { ContactActions } from "@/components/admin/contact-actions";
+
+export default async function LeadPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; const { lead } = await getLead(id); if (!lead) notFound(); return <><Breadcrumbs items={[{ label: "Leads", href: "/admin/leads" }, { label: lead.name }]} /><article className="surface rounded-2xl p-5 sm:p-7"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><div className="flex items-center gap-2"><h1 className="text-2xl font-extrabold">{lead.name}</h1><Status status={lead.status} /></div><p className="mt-1 text-xs text-[#7a837e]">Recebido pelo site em {new Intl.DateTimeFormat("pt-BR", { dateStyle: "long", timeStyle: "short" }).format(new Date(lead.createdAt))}</p><div className="mt-3"><ContactActions phone={lead.phone} whatsapp={lead.whatsapp} /></div></div><Link href={`/admin/imoveis/${lead.propertyId}`} className="action"><Building2 size={14} /> {lead.propertyCode}</Link></div><div className="mt-7 grid gap-3 sm:grid-cols-2"><Info icon={Mail} label="E-mail" value={lead.email} /><Info icon={Building2} label="Imóvel" value={`${lead.propertyCode} — ${lead.propertyTitle}`} /></div><div className="mt-5 rounded-xl bg-[#f6f7f4] p-4"><p className="flex items-center gap-2 text-[10px] font-bold uppercase text-[#7a837e]"><MessageSquare size={13} /> Mensagem</p><p className="mt-2 text-sm leading-6">{lead.message}</p></div><LeadActions lead={lead} /></article></>; }
+function Info({ icon: Icon, label, value }: { icon: typeof Phone; label: string; value: string }) { return <div className="rounded-xl border border-[#e7e9e5] p-4"><p className="flex items-center gap-2 text-[10px] font-bold uppercase text-[#7a837e]"><Icon size={13} />{label}</p><p className="mt-2 text-xs font-bold">{value}</p></div>; }
